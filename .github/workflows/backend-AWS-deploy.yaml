@@ -55,7 +55,7 @@ jobs:
     #working directory to specify when the actions will run
     defaults:
       run:
-        working-directory: tts-backend-terraform-code
+        working-directory: "tts-backend-terraform-code/**"
 
     steps:
       # Displays a message when the workflow is triggered after a successful run of the lambda pipeline
