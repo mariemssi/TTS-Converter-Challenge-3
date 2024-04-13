@@ -9,7 +9,7 @@ resource "aws_apigatewayv2_api" "api_gateway" {
     //allow_headers = ["content-type"]
     allow_methods = ["*"]
     //allow_headers = ["Content-Type", "Authorization", "X-Amz-Date", "X-Api-Key", "X-Amz-Security-Token"]
-    allow_headers =["*"]
+    allow_headers = ["*"]
     max_age       = 0
   }
 
