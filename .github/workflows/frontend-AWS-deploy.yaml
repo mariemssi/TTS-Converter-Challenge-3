@@ -1,0 +1,82 @@
+# This is a workflow to deploy TTS Converter app AWS resources
+
+name: TTS Converter App Frontend Infra pipeline
+
+# Controls when the workflow will run - three are 3 possible triggers
+on:
+  # Triggers the workflow on push events to the main branch, excluding changes to the "tts-lambda-code" directory and the readme file
+  push:
+    branches: ["main"]
+    paths: 
+      "tts-frontend-terraform-code/**"
+
+  # Allows manual triggering of the workflow from the Actions tab, providing options to deploy or destroy resources
+  # Used to control better the creation and deletion of resources while testing
+  workflow_dispatch:
+    inputs:
+      terraform_action:
+        type: choice
+        description: Select terraform action
+        options:
+          - apply
+          - destroy
+        required: true
+
+# Defines jobs within the workflow
+jobs:
+  TTS_Converter_Frontend-Infra:
+    name: "TTS_Converter_Frontend-Infra"
+
+    # Defines environment variables for the workflow
+    env:
+      # AWS secrets
+      AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+      AWS_SECRET_ACCESS_KEY: ${{secrets.AWS_SECRET_ACCESS_KEY }}
+
+    # Specifies the operating system environment for the job
+    # The workflow will run on a github virtual machine (runner) with the latest version of Ubuntu Linux
+    runs-on: ubuntu-latest
+
+    steps:
+      # Displays a message when the workflow is triggered by a push event
+      - name: Run on push event
+        if: github.event_name == 'push'
+        run: echo "run on push event"
+
+      # Displays a message when the workflow is triggered by manually
+      - name: Run on workflow_dispatch event
+        if: github.event_name == 'workflow_dispatch'
+        run: echo "run on manual trigger"
+
+      # Checkout the repository to the GitHub Actions runner
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      # Install the latest version of Terraform CLI
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+
+      # Initializes a new or existing Terraform working directory
+      - name: Terraform Init
+        run: terraform init
+
+      # Checks that all Terraform configuration files adhere to a canonical format
+      # In case of pipeline fail in this step, run terraform fmt in your code to format it correctly then push it
+      - name: Terraform Format
+        run: terraform fmt -check
+
+      # Generates an execution plan for Terraform
+      - name: Terraform Plan
+        run: terraform plan
+
+      # Applies changes to infrastructure according to Terraform configuration files
+      # Triggered only if the option 'Apply' is selected
+      - name: Terraform Apply
+        if: ${{ github.event.inputs.terraform_action == 'apply' }}
+        run: terraform apply -auto-approve
+
+      # Destroys the infrastructure
+      # Triggered only if 'Destroy' option is selected
+      - name: Terraform destroy
+        if: ${{ github.event.inputs.terraform_action == 'destroy' }}
+        run: terraform destroy -auto-approve

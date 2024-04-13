@@ -7,7 +7,7 @@ name: Lambda pipeline
 on:
   push:
     branches: ["main"]
-    paths: "lambdacode/**"
+    paths: "tts-lambda-code/**"
 
 # Defines environment variables
 env:
@@ -33,7 +33,7 @@ jobs:
       # Source: https://docs.aws.amazon.com/lambda/latest/dg/python-package.html#python-package-create-no-dependencies
       - name: Zip lambda code
         run: |
-          cd lambdacode
+          cd tts-lambda-code
           zip -r lambda.zip .
           zipinfo lambda.zip
           
@@ -44,9 +44,11 @@ jobs:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: "us-east-1"
-          aws-bucket: "lambdacode17032024"
-          file-path: "lambdacode/lambda.zip"
-          # destination-dir specifies "the directory" in the bucket where the upload will be stored; 
+          # aws-bucket = the name of lambdacode bucket
+          aws-bucket: ${{ secrets.S3_LAMBDA_CODE_BUCKET}}
+          # file-path = Path of the file to upload
+          file-path: "tts-lambda-code/lambda.zip"
+          # destination-dir = "the directory" in the bucket where the upload will be stored; 
           # I choose that is directly uploaded in the bucket
           destination-dir: "/"
           bucket-root: "/"

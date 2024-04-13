@@ -9,6 +9,7 @@ variable "bucket_name" {
   default="www.buildwithaws.com"
 }
 
+#The backend should be created before 
 variable "api_gateway_invoke_URL" {
   type        = string
   description = "The invoke URL of your API gateway"

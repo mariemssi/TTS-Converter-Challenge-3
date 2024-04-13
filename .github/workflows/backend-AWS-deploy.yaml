@@ -1,15 +1,20 @@
 # This is a workflow to deploy TTS Converter app AWS resources
 
-name: TTS Converter App Infra pipeline
+name: TTS Converter App Backend Infra pipeline
 
 # Controls when the workflow will run - three are 3 possible triggers
 on:
-  # Triggers the workflow on push events to the main branch, excluding changes to the "lambdacode" directory and the readme file
+  # Triggers the workflow on push events to the main branch, excluding changes to the "tts-lambda-code" directory and the readme file
   push:
     branches: ["main"]
-    paths-ignore:
-      - "lambdacode/**"
-      - "README.md"
+    paths: 
+      "tts-backend-terraform-code/**"
+    
+    #paths-ignore:
+    #  - "tts-lambda-code/**"
+    #  - "tts-fontend-react-code/**"
+    #  - "tts-frontend-terraform-code/**"
+    #  - "README.md"
 
   # Triggers the workflow after the completion of the "Lambda pipeline" workflow
   workflow_run:
@@ -31,8 +36,8 @@ on:
 
 # Defines jobs within the workflow
 jobs:
-  TTS_Converter_Infra:
-    name: "TTS_Converter_Infra"
+  TTS_Converter_Backend-Infra:
+    name: "TTS_Converter_Backend-Infra"
 
     # This job is launched only after a push of infra code changes in the main branch or after the success of lambda pipeline
     if: github.event.workflow_run.conclusion == 'success' || github.event_name == 'push' || github.event_name == 'workflow_dispatch'

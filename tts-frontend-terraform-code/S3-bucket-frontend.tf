@@ -1,6 +1,9 @@
 # Create the S3 bucket to contain all frontend files: HTML, CSS and javascript files  
 resource "aws_s3_bucket" "tts_frontend_bucket" {
   bucket = var.bucket_name
+
+  #To allow destroy a non empty bucket
+  force_destroy = true
 }
 
 # This configuration sets up the S3 bucket to behave like a web server
