@@ -34,9 +34,7 @@ on:
           - destroy
         required: true
 
-
-
-# Defines jobs within the workflow
+        # Defines jobs within the workflow
 jobs:
   TTS_Converter_Backend-Infra:
     name: "TTS_Converter_Backend-Infra"
@@ -57,9 +55,9 @@ jobs:
     #working directory to specify when the actions will run
     defaults:
       run:
-      working-directory: "tts-backend-terraform-code"
+        working-directory: "tts-backend-terraform-code"
     
-     steps:
+    steps:
       # Displays a message when the workflow is triggered after a successful run of the lambda pipeline
       - name: Run on lambda pipeline success
         if: github.event.workflow_run.conclusion == 'success'
