@@ -1,0 +1,52 @@
+# This is a workflow triggered by lambda code changes
+
+name: Lambda pipeline
+
+# Controls when the workflow will run
+# Triggers the workflow on push to the main branch affecting files in "lambdacode" directory
+on:
+  push:
+    branches: ["main"]
+    paths: "lambdacode/**"
+
+# Defines environment variables
+env:
+  # AWS secrets
+  AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+  AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+
+# Defines jobs within the workflow
+jobs:
+  terraform:
+    name: "Lambda job"
+
+    # Specifies the operating system environment for the job
+    runs-on: ubuntu-latest
+
+    steps:
+      # Checkout the repository to the GitHub Actions runner
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      # Zip lambda code
+      # If your function code has no dependencies, your .zip file contains only the .py file with your function’s handler code. 
+      # Source: https://docs.aws.amazon.com/lambda/latest/dg/python-package.html#python-package-create-no-dependencies
+      - name: Zip lambda code
+        run: |
+          cd lambdacode
+          zip -r lambda.zip .
+          zipinfo lambda.zip
+          
+      # Uploads the zipped lambda code to an S3 bucket that you choose for lambda code
+      - name: Upload to S3
+        uses: hkusu/s3-upload-action@v2
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: "us-east-1"
+          aws-bucket: "lambdacode17032024"
+          file-path: "lambdacode/lambda.zip"
+          # destination-dir specifies "the directory" in the bucket where the upload will be stored; 
+          # I choose that is directly uploaded in the bucket
+          destination-dir: "/"
+          bucket-root: "/"

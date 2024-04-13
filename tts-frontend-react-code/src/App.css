@@ -1,0 +1,63 @@
+/* App.css */
+
+.body-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 40px; /* Ajouter de l'espace entre la bande du titre et le contenu de la conversion */
+}
+
+.header {
+  width: 100%;
+  background-color: #007bff; /* Set header background color */
+  color: #fff; /* Set font color to white */
+  padding: 20px 0; /* Ajouter un espace de remplissage au haut et bas du titre */
+  text-align: center; /* Centrer le texte */
+}
+
+.text-to-sound-container {
+  width: 100%;
+  max-width: 600px;
+  margin-top: 20px; /* Ajouter de la marge entre le titre et la zone de texte */
+  padding: 20px;
+  box-sizing: border-box;
+  border: 1px solid #ccc; /* Ajouter une bordure */
+  border-radius: 5px; /* Ajouter une bordure arrondie */
+}
+
+.textarea-container {
+  margin-bottom: 20px;
+}
+
+textarea {
+  width: 100%;
+  height: 150px;
+  padding: 10px;
+  border: 1px solid #ccc; /* Ajouter une bordure */
+  border-radius: 5px; /* Ajouter une bordure arrondie */
+  resize: none;
+  box-sizing: border-box;
+}
+
+button {
+  background-color: #007bff; /* Set button color */
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  padding: 10px 20px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+button:hover {
+  background-color: #0056b3;
+}
+
+audio {
+  width: 100%;
+  margin-top: 20px;
+}
+
+.error-message {
+  color: #ff0000;
+}
