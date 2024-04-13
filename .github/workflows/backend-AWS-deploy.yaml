@@ -34,10 +34,7 @@ on:
           - destroy
         required: true
 
-#working directory to specify when the actions will run
-defaults:
-  run:
-    working-directory: "hand-on-aws-terraform-3/tts-backend-terraform-code"
+
 
 # Defines jobs within the workflow
 jobs:
@@ -56,8 +53,13 @@ jobs:
     # Specifies the operating system environment for the job
     # The workflow will run on a github virtual machine (runner) with the latest version of Ubuntu Linux
     runs-on: ubuntu-latest
-
-    steps:
+    
+    #working directory to specify when the actions will run
+    defaults:
+      run:
+      working-directory: "tts-backend-terraform-code"
+    
+     steps:
       # Displays a message when the workflow is triggered after a successful run of the lambda pipeline
       - name: Run on lambda pipeline success
         if: github.event.workflow_run.conclusion == 'success'
