@@ -34,10 +34,10 @@ on:
           - destroy
         required: true
 
-        #working directory to specify when the actions will run
+#working directory to specify when the actions will run
 defaults:
   run:
-    working-directory: "tts-backend-terraform-code/**"
+    working-directory: "tts-backend-terraform-code"
 
 # Defines jobs within the workflow
 jobs:
