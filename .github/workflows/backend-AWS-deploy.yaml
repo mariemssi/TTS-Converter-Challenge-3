@@ -82,7 +82,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
         with:
-          path: tts-backend-terraform-code
+          path: tts-backend-terraform-code/
 
       - name: test directories runner 2
         run: |
