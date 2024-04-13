@@ -81,8 +81,8 @@ jobs:
       # Checkout the repository to the GitHub Actions runner
       - name: Checkout
         uses: actions/checkout@v4
-        with:
-          path: tts-backend-terraform-code/
+       # with:
+       #   path: tts-backend-terraform-code/
 
       - name: test directories runner 2
         run: |
@@ -95,25 +95,35 @@ jobs:
 
       # Initializes a new or existing Terraform working directory
       - name: Terraform Init
-        run: terraform init
+        run: |
+          cd tts-backend-terraform-code
+          terraform init
 
       # Checks that all Terraform configuration files adhere to a canonical format
       # In case of pipeline fail in this step, run terraform fmt in your code to format it correctly then push it
       - name: Terraform Format
-        run: terraform fmt -check
+        run: |
+          cd tts-backend-terraform-code
+          terraform fmt -check
 
       # Generates an execution plan for Terraform
       - name: Terraform Plan
-        run: terraform plan
+        run: |
+          cd tts-backend-terraform-code
+          terraform plan
 
       # Applies changes to infrastructure according to Terraform configuration files
       # Triggered only if the option 'Apply' is selected
       - name: Terraform Apply
         if: ${{ github.event.inputs.terraform_action == 'apply' }}
-        run: terraform apply -auto-approve
+        run: |
+          cd tts-backend-terraform-code
+          terraform apply -auto-approve
 
       # Destroys the infrastructure
       # Triggered only if 'Destroy' option is selected
       - name: Terraform destroy
         if: ${{ github.event.inputs.terraform_action == 'destroy' }}
-        run: terraform destroy -auto-approve
+        run: |
+          cd tts-backend-terraform-code
+          terraform destroy -auto-approve
