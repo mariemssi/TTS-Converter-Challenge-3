@@ -3,9 +3,8 @@ name: Build and Deploy React App
 on:
   push:
     branches:
-      - main  
-    paths: 
-      "tts-frontend-react-code/**"
+      - main
+    paths: "tts-frontend-react-code/**"
 
   # Configure Manual Trigger
   workflow_dispatch:
@@ -20,9 +19,8 @@ on:
 
 jobs:
   build-deploy-invalidate:
-
     runs-on: ubuntu-latest
-    
+
     env:
       AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
       AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
@@ -44,19 +42,18 @@ jobs:
         run: npm run build
         working-directory: tts-frontend-react-code
 
-      - name: Install AWS CLI
-        if: ${{ github.event.inputs.deploy_option == 'yes' }}
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y awscli
-      
+      #  - name: Install AWS CLI
+      #    run: |
+      #      sudo apt-get update
+      #      sudo apt-get install -y awscli
+
+      # AWS CLI is preinstalled in github workflow runners
       - name: Deploy to S3
         if: ${{ github.event.inputs.deploy_option == 'deploy' }}
         run: aws s3 sync ./build s3://${{ secrets.S3_FRONTEND_BUCKET }} --delete # Modify BUCKET_NAME with your bucket name
         working-directory: tts-frontend-react-code
 
-      - name: invalidate_cache CloudFront 
+      - name: invalidate_cache CloudFront
         if: ${{ github.event.inputs.deploy_option == 'deploy' }}
         run: |
           aws cloudfront create-invalidation --distribution-id ${{ secrets.CLOUDFRONT_DISTRIBUTION_ID }} --paths "/*"
-        
