@@ -1,6 +1,6 @@
 # SSL Certificate from AWS ACM for our domain name
 resource "aws_acm_certificate" "ssl_certificate" {
- // provider                  = aws.acm_provider //acm_provider is an alias declared in tts-frontend-terraform-code/frontend-terraform-config.tf
+  // provider                  = aws.acm_provider //acm_provider is an alias declared in tts-frontend-terraform-code/frontend-terraform-config.tf
   domain_name               = var.domain_name
   subject_alternative_names = ["*.${var.domain_name}"]
 

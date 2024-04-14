@@ -38,9 +38,9 @@ resource "aws_cloudfront_distribution" "s3_distribution" {
   # The default behavior catches everything, so you don't need to specify a path_pattern. You can think that it's a hardcoded *.
   default_cache_behavior {
     cache_policy_id        = "658327ea-f89d-4fab-a63d-7e88639e58f6"
-    viewer_protocol_policy = "redirect-to-https" // CloudFront should redirect HTTP traffic to HTTPS
-    allowed_methods        = ["GET", "HEAD","OPTIONS"]     //The HTTP method that the distribution can accept
-    cached_methods         = ["GET", "HEAD"]     // The HTTP methods that the distribution can cache
+    viewer_protocol_policy = "redirect-to-https"        // CloudFront should redirect HTTP traffic to HTTPS
+    allowed_methods        = ["GET", "HEAD", "OPTIONS"] //The HTTP method that the distribution can accept
+    cached_methods         = ["GET", "HEAD"]            // The HTTP methods that the distribution can cache
     compress               = true
     target_origin_id       = "${var.bucket_name}-origin"
 
@@ -58,7 +58,7 @@ resource "aws_cloudfront_distribution" "s3_distribution" {
   origin {
     domain_name = replace(var.api_gateway_invoke_URL, "/^https?://([^/]*).*/", "$1") //"replace" function is used to extrat the domain from the api gateway invoke url
     origin_id   = "apigw"
-   // origin_path = "/test" 
+    // origin_path = "/test" 
 
     custom_origin_config {
       http_port              = 80
@@ -74,7 +74,7 @@ resource "aws_cloudfront_distribution" "s3_distribution" {
     allowed_methods  = ["DELETE", "GET", "HEAD", "OPTIONS", "PATCH", "POST", "PUT"]
     cached_methods   = ["GET", "HEAD"]
     target_origin_id = "apigw"
-    
+
 
     # APIs are usually not cacheable so set 0 for all TTLs
     default_ttl = 0
@@ -83,7 +83,7 @@ resource "aws_cloudfront_distribution" "s3_distribution" {
 
     forwarded_values {
       query_string = true
-      headers = ["none"] // à comprendre !!!!!!!!!!!!
+      headers      = ["none"] // à comprendre !!!!!!!!!!!!
       cookies {
         forward = "all"
       }
