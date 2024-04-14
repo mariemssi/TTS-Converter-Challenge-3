@@ -7,9 +7,8 @@ on:
   # Triggers the workflow on push events to the main branch, excluding changes to the "tts-lambda-code" directory and the readme file
   push:
     branches: ["main"]
-    paths: 
-      "tts-backend-terraform-code/**"
-    
+    paths: "tts-backend-terraform-code/**"
+
     #paths-ignore:
     #  - "tts-lambda-code/**"
     #  - "tts-fontend-react-code/**"
@@ -51,12 +50,12 @@ jobs:
     # Specifies the operating system environment for the job
     # The workflow will run on a github virtual machine (runner) with the latest version of Ubuntu Linux
     runs-on: ubuntu-latest
-    
+
     #working directory to specify when the actions will run
     #defaults:
-      #run:
-       # working-directory: "tts-backend-terraform-code"
-    
+    #run:
+    # working-directory: "tts-backend-terraform-code"
+
     steps:
       # Displays a message when the workflow is triggered after a successful run of the lambda pipeline
       - name: Run on lambda pipeline success
@@ -81,8 +80,8 @@ jobs:
       # Checkout the repository to the GitHub Actions runner
       - name: Checkout
         uses: actions/checkout@v4
-       # with:
-       #   path: tts-backend-terraform-code/
+        # with:
+        #   path: tts-backend-terraform-code/
 
       - name: test directories runner 2
         run: |
@@ -95,35 +94,30 @@ jobs:
 
       # Initializes a new or existing Terraform working directory
       - name: Terraform Init
-        run: |
-          cd tts-backend-terraform-code
-          terraform init
+        run: terraform init
+        working-directory: tts-backend-terraform-code
 
       # Checks that all Terraform configuration files adhere to a canonical format
       # In case of pipeline fail in this step, run terraform fmt in your code to format it correctly then push it
       - name: Terraform Format
-        run: |
-          cd tts-backend-terraform-code
-          terraform fmt -check
+        run: terraform fmt -check
+        working-directory: tts-backend-terraform-code
 
       # Generates an execution plan for Terraform
       - name: Terraform Plan
-        run: |
-          cd tts-backend-terraform-code
-          terraform plan
+        run: terraform plan
+        working-directory: tts-backend-terraform-code
 
       # Applies changes to infrastructure according to Terraform configuration files
       # Triggered only if the option 'Apply' is selected
       - name: Terraform Apply
         if: ${{ github.event.inputs.terraform_action == 'apply' }}
-        run: |
-          cd tts-backend-terraform-code
-          terraform apply -auto-approve
+        run: terraform apply -auto-approve
+        working-directory: tts-backend-terraform-code
 
       # Destroys the infrastructure
       # Triggered only if 'Destroy' option is selected
       - name: Terraform destroy
         if: ${{ github.event.inputs.terraform_action == 'destroy' }}
-        run: |
-          cd tts-backend-terraform-code
-          terraform destroy -auto-approve
+        run: terraform destroy -auto-approve
+        working-directory: tts-backend-terraform-code
