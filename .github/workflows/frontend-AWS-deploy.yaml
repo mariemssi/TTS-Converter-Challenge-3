@@ -37,10 +37,6 @@ jobs:
     # The workflow will run on a github virtual machine (runner) with the latest version of Ubuntu Linux
     runs-on: ubuntu-latest
 
-    defaults:
-      run:
-        working-directory: tts-frontend-terraform-code
-
     steps:
       # Displays a message when the workflow is triggered by a push event
       - name: Run on push event
@@ -63,24 +59,29 @@ jobs:
       # Initializes a new or existing Terraform working directory
       - name: Terraform Init
         run: terraform init
+        working-directory: tts-frontend-terraform-code
 
       # Checks that all Terraform configuration files adhere to a canonical format
       # In case of pipeline fail in this step, run terraform fmt in your code to format it correctly then push it
       - name: Terraform Format
         run: terraform fmt -check
+        working-directory: tts-frontend-terraform-code
 
       # Generates an execution plan for Terraform
       - name: Terraform Plan
         run: terraform plan
+        working-directory: tts-frontend-terraform-code
 
       # Applies changes to infrastructure according to Terraform configuration files
       # Triggered only if the option 'Apply' is selected
       - name: Terraform Apply
         if: ${{ github.event.inputs.terraform_action == 'apply' }}
         run: terraform apply -auto-approve
+        working-directory: tts-frontend-terraform-code
 
       # Destroys the infrastructure
       # Triggered only if 'Destroy' option is selected
       - name: Terraform destroy
         if: ${{ github.event.inputs.terraform_action == 'destroy' }}
         run: terraform destroy -auto-approve
+        working-directory: tts-frontend-terraform-code
