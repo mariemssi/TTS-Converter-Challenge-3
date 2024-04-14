@@ -9,7 +9,15 @@ on:
 
   # Configure Manual Trigger
   workflow_dispatch:
-    
+    inputs:
+      deploy_option:
+        type: choice
+        description: Select deploy to S3
+        options:
+          - Yes
+          - No
+        required: true
+        
 jobs:
   build-deploy-invalidate:
 
@@ -37,15 +45,18 @@ jobs:
         working-directory: tts-frontend-react-code
 
       - name: Install AWS CLI
+        if: ${{ github.event.inputs.deploy_option == 'yes' }}
         run: |
           sudo apt-get update
           sudo apt-get install -y awscli
       
       - name: Deploy to S3
+        if: ${{ github.event.inputs.deploy_option == 'yes' }}
         run: aws s3 sync ./build s3://${{ secrets.S3_FRONTEND_BUCKET }} --delete # Modify BUCKET_NAME with your bucket name
         working-directory: tts-frontend-react-code
-        
+
       - name: invalidate_cache CloudFront 
+        if: ${{ github.event.inputs.deploy_option == 'yes' }}
         run: |
           aws cloudfront create-invalidation --distribution-id ${{ secrets.CLOUDFRONT_DISTRIBUTION_ID }} --paths "/*"
         
