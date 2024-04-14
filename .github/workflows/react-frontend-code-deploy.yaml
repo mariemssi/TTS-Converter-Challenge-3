@@ -15,7 +15,8 @@ on:
         description: Select deploy to S3
         options:
           - deploy
-        required: false
+          - not-deploy
+        required: true
 
 jobs:
   build-deploy-invalidate:
