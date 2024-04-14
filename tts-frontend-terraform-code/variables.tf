@@ -1,18 +1,18 @@
 variable "domain_name" {
   type        = string
   description = "The domain name for the website."
-  default     = "buildwithaws.com"
+  #default     = "buildwithaws.com"
 }
 variable "bucket_name" {
   type        = string
   description = "The name of the bucket to host your frontend code"
-  default     = "www.buildwithaws.com"
+  #default     = "www.buildwithaws.com"
 }
 
 #The backend should be created before 
 variable "api_gateway_invoke_URL" {
   type        = string
   description = "The invoke URL of your API gateway"
-  default     = "https://hc9twvoiyd.execute-api.us-east-1.amazonaws.com/test"
+  #default     = "https://hc9twvoiyd.execute-api.us-east-1.amazonaws.com/test"
 
 }
