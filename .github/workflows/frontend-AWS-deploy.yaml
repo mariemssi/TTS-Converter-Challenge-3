@@ -70,9 +70,9 @@ jobs:
       # Generates an execution plan for Terraform
       - name: Terraform Plan
         run: terraform plan \
-          -var="domain_name=${{secrets.DOMAIN_NAME}}" \
-          -var="bucket_name=${{secrets.S3_FRONTEND_BUCKET}}" \
-          -var="api_gateway_invoke_URL=${{secrets.API_GATEWAY_INVOKE_URL}}"
+          --var="domain_name=${{secrets.DOMAIN_NAME}}" \
+          --var="bucket_name=${{secrets.S3_FRONTEND_BUCKET}}" \
+          --var="api_gateway_invoke_URL=${{secrets.API_GATEWAY_INVOKE_URL}}"
         working-directory: tts-frontend-terraform-code
 
       # Applies changes to infrastructure according to Terraform configuration files
@@ -80,9 +80,9 @@ jobs:
       - name: Terraform Apply 
         if: ${{ github.event.inputs.terraform_action == 'apply' }}
         run: terraform apply \
-          -var="domain_name=${{secrets.DOMAIN_NAME}}" \
-          -var="bucket_name=${{secrets.S3_FRONTEND_BUCKET}}" \
-          -var="api_gateway_invoke_URL=${{secrets.API_GATEWAY_INVOKE_URL}}"\
+          --var="domain_name=${{secrets.DOMAIN_NAME}}" \
+          --var="bucket_name=${{secrets.S3_FRONTEND_BUCKET}}" \
+          --var="api_gateway_invoke_URL=${{secrets.API_GATEWAY_INVOKE_URL}}"\
           -auto-approve
         working-directory: tts-frontend-terraform-code
 
