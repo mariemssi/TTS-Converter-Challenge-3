@@ -14,10 +14,10 @@ on:
         type: choice
         description: Select deploy to S3
         options:
-          - Yes
-          - No
+          - yes
+          - no
         required: true
-        
+
 jobs:
   build-deploy-invalidate:
 
