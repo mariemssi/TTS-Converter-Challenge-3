@@ -103,8 +103,4 @@ resource "aws_cloudfront_distribution" "s3_distribution" {
     ssl_support_method       = "sni-only" //Server Name Indication (SNI) is for support multiple SSL/TLS certificates on the same IP address
     minimum_protocol_version = "TLSv1.2_2021"
   }
-
-}
-output "cloudfront_url" {
-  value = aws_cloudfront_distribution.s3_distribution.domain_name
 }
