@@ -9,7 +9,7 @@ resource "aws_cloudfront_origin_access_control" "oac" {
 }
 
 resource "aws_cloudfront_distribution" "s3_distribution" {
-  depends_on = [aws_s3_bucket.tts_frontend_bucket, aws_cloudfront_origin_access_control.oac]
+  depends_on = [aws_s3_bucket.tts_frontend_bucket]
 
   comment         = "${var.domain_name} distribution"
   enabled         = true
