@@ -76,11 +76,7 @@ jobs:
       # Triggered only if the option 'Apply' is selected
       - name: Terraform Apply 
         if: ${{ github.event.inputs.terraform_action == 'apply' }}
-        run: terraform apply \
-          -var 'domain_name=${{secrets.DOMAIN_NAME}}' \
-          -var 'bucket_name=${{secrets.S3_FRONTEND_BUCKET}}' \
-          -var 'api_gateway_invoke_URL=${{secrets.API_GATEWAY_INVOKE_URL}}'\
-          -auto-approve
+        run: terraform apply -var="domain_name=${{secrets.DOMAIN_NAME}}" -var="bucket_name=${{secrets.S3_FRONTEND_BUCKET}}" -var="api_gateway_invoke_URL=${{secrets.API_GATEWAY_INVOKE_URL}}" -auto-approve
         working-directory: tts-frontend-terraform-code
 
       # Destroys the infrastructure
