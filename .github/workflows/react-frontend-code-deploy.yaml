@@ -50,7 +50,8 @@ jobs:
       # AWS CLI is preinstalled in github workflow runners
       - name: Deploy to S3
         if: ${{ github.event.inputs.deploy_option == 'deploy' }}
-        run: aws s3 sync ./build ${{ secrets.S3_FRONTEND_BUCKET }} --delete # Modify BUCKET_NAME with your bucket name
+        # Modify BUCKET_NAME with your s3://yourbucketname and you should mention the region
+        run: aws s3 sync ./build ${{ secrets.S3_FRONTEND_BUCKET }} --delete --region us-east-1  
         working-directory: tts-frontend-react-code
 
       - name: invalidate_cache CloudFront
