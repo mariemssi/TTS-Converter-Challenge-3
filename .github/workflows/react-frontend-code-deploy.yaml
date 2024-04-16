@@ -51,7 +51,7 @@ jobs:
       - name: Deploy to S3
         if: ${{ github.event.inputs.deploy_option == 'deploy' }}
         # Modify BUCKET_NAME with your s3://yourbucketname and you should mention the region
-        run: aws s3 sync ./build ${{ secrets.S3_FRONTEND_BUCKET }} --delete --region us-east-1  
+        run: aws s3 sync ./build s3://${{ secrets.S3_FRONTEND_BUCKET }} --delete --region us-east-1  
         working-directory: tts-frontend-react-code
 
       - name: invalidate_cache CloudFront
