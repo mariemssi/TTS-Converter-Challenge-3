@@ -46,7 +46,7 @@ To solve it, new terraform files are added and two new pipelines are created (re
       Try the app using a curl query using the invokeURL of the API Gateway stage, which you can obtain from the output of the Terraform code or directly from the AWS 
       Management Console (you can use the example in [this link](https://medium.com/@lucas.ludicsa99/texttospeechconvertertext-to-speech-converter-using-aws-lambda-polly-and-api-gateway-bf814d2bbe84)) 
    
-# Deploy the frontend
+### Deploy the frontend
 
 9. Set your **domain name**, **S3 frontend bucket name** and **api gateway invoke URL** created in step 7 as secrets in your github repo with the names "DOMAIN_NAME", "S3_FRONTEND_BUCKET" and "API_GATEWAY_INVOKE_URL"
     
