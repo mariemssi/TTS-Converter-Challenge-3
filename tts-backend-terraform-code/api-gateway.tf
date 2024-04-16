@@ -2,16 +2,14 @@
 resource "aws_apigatewayv2_api" "api_gateway" {
   name          = "http-api"
   protocol_type = "HTTP"
-  //this bloc is added to resolve cors pbm
-  //1 cors_configuration {
-  // 2 allow_origins = ["*"]
-  //allow_methods = ["POST", "GET", "OPTIONS"]
-  //allow_headers = ["content-type"]
-  // 3 allow_methods = ["*"]
-  //allow_headers = ["Content-Type", "Authorization", "X-Amz-Date", "X-Api-Key", "X-Amz-Security-Token"]
-  // 4 allow_headers = ["*"]
-  // 5 max_age       = 0
-  //6 }
+  
+  /*This bloc is added to resolve cors pbm
+   cors_configuration {
+     allow_origins = ["*"]
+     allow_methods = ["*"]
+     allow_headers = ["*"]
+     max_age       = 0
+  }*/
 
 }
 # Create a stage for the created API Gateway
