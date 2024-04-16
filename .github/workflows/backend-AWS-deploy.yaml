@@ -1,19 +1,13 @@
-# This is a workflow to deploy TTS Converter app AWS resources
+# This is a workflow to deploy TTS Converter app backend AWS resources
 
 name: TTS Converter App Backend Infra pipeline
 
 # Controls when the workflow will run - three are 3 possible triggers
 on:
-  # Triggers the workflow on push events to the main branch, excluding changes to the "tts-lambda-code" directory and the readme file
+  # Triggers the workflow on push events to the main branch affecting tts-backend-terraform-code directory 
   push:
     branches: ["main"]
     paths: "tts-backend-terraform-code/**"
-
-    #paths-ignore:
-    #  - "tts-lambda-code/**"
-    #  - "tts-fontend-react-code/**"
-    #  - "tts-frontend-terraform-code/**"
-    #  - "README.md"
 
   # Triggers the workflow after the completion of the "Lambda pipeline" workflow
   workflow_run:
@@ -33,7 +27,7 @@ on:
           - destroy
         required: true
 
-        # Defines jobs within the workflow
+# Defines jobs within the workflow
 jobs:
   TTS_Converter_Backend-Infra:
     name: "TTS_Converter_Backend-Infra"
@@ -51,11 +45,6 @@ jobs:
     # The workflow will run on a github virtual machine (runner) with the latest version of Ubuntu Linux
     runs-on: ubuntu-latest
 
-    #working directory to specify when the actions will run
-    #defaults:
-    #run:
-    # working-directory: "tts-backend-terraform-code"
-
     steps:
       # Displays a message when the workflow is triggered after a successful run of the lambda pipeline
       - name: Run on lambda pipeline success
@@ -72,21 +61,9 @@ jobs:
         if: github.event_name == 'workflow_dispatch'
         run: echo "run on manual trigger"
 
-      - name: test directories runner 1
-        run: |
-          pwd
-          ls
-
       # Checkout the repository to the GitHub Actions runner
       - name: Checkout
         uses: actions/checkout@v4
-        # with:
-        #   path: tts-backend-terraform-code/
-
-      - name: test directories runner 2
-        run: |
-          pwd
-          ls
 
       # Install the latest version of Terraform CLI
       - name: Setup Terraform

@@ -1,10 +1,10 @@
-# This is a workflow to deploy TTS Converter app AWS resources
+# This is a workflow to deploy the frontend TTS Converter app AWS resources
 
 name: TTS Converter App Frontend Infra pipeline
 
 # Controls when the workflow will run - three are 3 possible triggers
 on:
-  # Triggers the workflow on push events to the main branch, excluding changes to the "tts-lambda-code" directory and the readme file
+  # Triggers the workflow on push events to the main branch affecting the tts-frontend-terraform-code folder and manually
   push:
     branches: ["main"]
     paths: 
