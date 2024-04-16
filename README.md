@@ -60,5 +60,6 @@ To solve it, new terraform files are added and two new pipelines are created (re
 
 ![image](https://github.com/mariemssi/TTS-Converter-Challenge-3/assets/69463864/7366979b-8ee0-4e8c-a941-16d7e00cdd85)
 
-
 You can find more details [here](https://medium.com/@meriemiag/text-to-speech-converter-challenge2-github-actions-workflows-16c59556e6c1) 
+
+**Note:** After completing testing, remember to select the "Destroy" option in the TTS Converter App Infra pipelines to tear down the resources and prevent unexpected charges from AWS at the end of the month.
