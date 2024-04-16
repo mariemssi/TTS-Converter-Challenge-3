@@ -29,7 +29,7 @@ resource "aws_route53_record" "cert_validation" {
     }
   }
   # The allow_overwrite argument is set to true, which means that the resource can overwrite existing records with the same name
-  allow_overwrite = true 
+  allow_overwrite = true
   name            = each.value.name
   records         = [each.value.record]
   ttl             = 60
