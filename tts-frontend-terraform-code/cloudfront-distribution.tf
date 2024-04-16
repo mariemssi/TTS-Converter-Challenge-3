@@ -15,14 +15,15 @@ resource "aws_cloudfront_distribution" "s3_distribution" {
   enabled         = true
   is_ipv6_enabled = true
   http_version    = "http2and3"
-  price_class     = "PriceClass_100" // Use only North America and Europe
+  price_class     = "PriceClass_100" # you can use this class for only North America and Europe
 
-  //The aliases argument specifies a list of domain names that are associated with the distribution
+  # The aliases argument specifies a list of domain names that are associated with the distribution
   aliases = [
     "www.${var.domain_name}"
   ]
 
-  // index.html is the file in the S3 bucket that must be loaded when we hit the / path of the CloudFront distribution URL.
+  # index.html is the file in the S3 bucket (default origin) that must be loaded 
+  # when we hit the / path of the CloudFront distribution URL.
   default_root_object = "index.html"
 
 
@@ -33,32 +34,33 @@ resource "aws_cloudfront_distribution" "s3_distribution" {
     origin_access_control_id = aws_cloudfront_origin_access_control.oac.id
   }
 
-  # There are two types of cache behaviors: default and ordered. When a request arrives CloudFront tries to match the path to the ordered cache behaviors one by one until a match is found. 
-  # If none matches, it will use the default. The ordering is important in cases where a given path matches multiple behaviors. In this case, it matters which one is the first.
-  # The default behavior catches everything, so you don't need to specify a path_pattern. You can think that it's a hardcoded *.
+  # There are two types of cache behaviors: default and ordered. When a request arrives 
+  # CloudFront tries to match the path to the ordered cache behaviors one by one until a match is found. 
+  # If none matches, it will use the default. The ordering is important in cases where a given path matches multiple behaviors. 
+  # In this case, it matters which one is the first.
+  # The default behavior catches everything, so you don't need to specify a path_pattern. 
+  # You can think that it's a hardcoded *.
   default_cache_behavior {
     cache_policy_id        = "658327ea-f89d-4fab-a63d-7e88639e58f6"
     viewer_protocol_policy = "redirect-to-https"        // CloudFront should redirect HTTP traffic to HTTPS
-    allowed_methods        = ["GET", "HEAD", "OPTIONS"] //The HTTP method that the distribution can accept
+    allowed_methods        = ["GET", "HEAD", "OPTIONS"] // The HTTP method that the distribution can accept
     cached_methods         = ["GET", "HEAD"]            // The HTTP methods that the distribution can cache
     compress               = true
     target_origin_id       = "${var.bucket_name}-origin"
 
-    # Time-To-Live (TTL) values is the duration of objects in the distribution to be cached(in edge locations)
     # The Default, Minimum, and Maximum TTLs are set to 0 seconds. In this case, CloudFront always verifies that it has the most recent content from the origin.
     # If the origin doesn't provide cache headers, such as Cache-Control max-age or Expires, then CloudFront caches the object for the Default TTL duration.
-    min_ttl     = 0
-    default_ttl = 0
-    max_ttl     = 0
+    # min_ttl     = 0
+    # default_ttl = 0
+    # max_ttl     = 0
 
   }
 
-  # The second origin for CF distribution is api gateway
+  # The second origin for CF distribution is the api-gateway
   # For more details about how to set origin path and path pattern: https://advancedweb.hu/how-to-use-api-gateway-with-cloudfront/
   origin {
-    domain_name = replace(var.api_gateway_invoke_URL, "/^https?://([^/]*).*/", "$1") //"replace" function is used to extrat the domain from the api gateway invoke url
+    domain_name = replace(var.api_gateway_invoke_URL, "/^https?://([^/]*).*/", "$1") //"replace" is a function used to extrat the domain from the api gateway invoke url
     origin_id   = "apigw"
-    // origin_path = "/test" 
 
     custom_origin_config {
       http_port              = 80
@@ -75,7 +77,7 @@ resource "aws_cloudfront_distribution" "s3_distribution" {
     cached_methods   = ["GET", "HEAD"]
     target_origin_id = "apigw"
 
-
+    # Time-To-Live (TTL) values is the duration of objects in the distribution to be cached (in edge locations)
     # APIs are usually not cacheable so set 0 for all TTLs
     default_ttl = 0
     min_ttl     = 0
@@ -83,7 +85,7 @@ resource "aws_cloudfront_distribution" "s3_distribution" {
 
     forwarded_values {
       query_string = true
-      headers      = ["none"] // à comprendre !!!!!!!!!!!!
+      headers      = ["none"] //important to set this param to not have 403 error
       cookies {
         forward = "all"
       }

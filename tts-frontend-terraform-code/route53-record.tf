@@ -1,6 +1,5 @@
 # A hosted zone in route53 is a container of records about how you want to route traffic for a specific domain name
 data "aws_route53_zone" "main_hosted_zone" {
-  //provider     = aws.use_default_region
   name         = var.domain_name
   private_zone = false
 }
