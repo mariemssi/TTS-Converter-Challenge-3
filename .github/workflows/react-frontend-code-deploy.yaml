@@ -4,9 +4,10 @@ on:
   push:
     branches:
       - main
+    # Automatic trigger when changes in tts-frontend-react-code folder
     paths: "tts-frontend-react-code/**"
 
-  # Configure Manual Trigger
+  # Configure Manual Trigger to facilitate test of the pipeline
   workflow_dispatch:
     inputs:
       deploy_option:
@@ -42,19 +43,15 @@ jobs:
         run: npm run build
         working-directory: tts-frontend-react-code
 
-      #  - name: Install AWS CLI
-      #    run: |
-      #      sudo apt-get update
-      #      sudo apt-get install -y awscli
-
       # AWS CLI is preinstalled in github workflow runners
       - name: Deploy to S3
         if: ${{ github.event.inputs.deploy_option == 'deploy' }}
-        # Modify BUCKET_NAME with your s3://yourbucketname and you should mention the region
+        # The first param of s" sync is s3://yourbucketname and you should mention the region
         run: aws s3 sync ./build s3://${{ secrets.S3_FRONTEND_BUCKET }} --delete --region us-east-1  
         working-directory: tts-frontend-react-code
-
+      
+      # Invalidate the cache to serve users with the new content 
       - name: invalidate_cache CloudFront
         if: ${{ github.event.inputs.deploy_option == 'deploy' }}
-        # you should mention the region in your command (source of the error:botocore.awsrequest.AWSRequest object at 0x7f6728351a10)
+        # you should mention the region in your command (to avoid the error:botocore.awsrequest.AWSRequest object at 0x7f6728351a10)
         run: aws cloudfront create-invalidation --distribution-id ${{ secrets.CLOUDFRONT_DISTRIBUTION_ID }} --paths "/*" --region us-east-1
