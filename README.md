@@ -45,7 +45,7 @@ To solve it, new terraform files are added and two new pipelines are created (re
     
 15. Trigger "react-frontend-code-deploy" pipeline
 
-16. Open your web browser and navigate to your domain using HTTPS like https://yourdomainname. If everything is fine, you will receive a result like this:
+16. Open your web browser and navigate to your domain using HTTPS like https://yourdomain.com. If everything is fine, you will receive a result like this:
 
 ![image](https://github.com/mariemssi/TTS-Converter-Challenge-3/assets/69463864/a21f7d69-41dc-4b11-a161-cbb75463650f)
 
