@@ -50,6 +50,6 @@ To solve it, new terraform files are added and two new pipelines are created (re
 ![image](https://github.com/mariemssi/TTS-Converter-Challenge-3/assets/69463864/a21f7d69-41dc-4b11-a161-cbb75463650f)
 
 
-You can find more details [here](https://medium.com/@meriemiag/text-to-speech-converter-challenge2-github-actions-workflows-16c59556e6c1) 
+You can find more details [here](https://medium.com/@meriemiag/tts-converter-app-challenge3-adding-react-frontend-s3-route53-cloudfront-acm-66936b26ad7f) 
 
 **Note:** After completing testing, remember to select the "Destroy" option in the TTS Converter App Infra pipelines to tear down the resources and prevent unexpected charges from AWS at the end of the month 😉
