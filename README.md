@@ -1,4 +1,4 @@
-# TTS Converter App - Challenge3 - Integrate React Frontend (S3, Route53, Cloudfront, ACM)
+# TTS Converter App - Challenge3 - Adding React Frontend (S3, Route53, Cloudfront, ACM)
 
 
 ![image](https://github.com/mariemssi/TTS-Converter-Challenge-3/assets/69463864/6d01d90e-ddc0-4c36-9644-f6bf3164fbd7)
@@ -21,13 +21,7 @@ To solve it, new terraform files are added and two new pipelines are created (re
 
 ### Deploy the backend
    
-3. Create a versioned S3 bucket for uploading zipped Lambda files (Artifact of lambda pipeline)
-
-   The Lambda pipeline needs to share the zip file with the TTS Converter App Infra pipeline, and I choose to do it via an S3 bucket. As a remark, I tried using the GitHub Action "actions/download-artifact@v4". It works 
-   well for sharing data between jobs within the same workflow but doesn't work for different workflows.
-   
-   Enabling versioning on this bucket assigns a unique version ID to each uploaded file version. This versioning mechanism ensures that every update to the Lambda code 
-   triggers a redeployment of the Lambda function.
+3. Create a versioned S3 bucket for uploading zipped Lambda file
 
 4. Update the **bucket name** and **object key** in "lambda.tf" and **aws-bucket** in the step "Upload to S3" in "lambda-code-upload.yaml" by the bucket created in step 3
    
@@ -35,16 +29,11 @@ To solve it, new terraform files are added and two new pipelines are created (re
 
    ![image](https://github.com/mariemssi/TTS-Converter-Challenge-2/assets/69463864/f0029d84-0d2d-4df2-bc20-f4d2d1e4656e)
   
-6. Test "lambda-code-upload pipeline" by adding a comment in the lambda code and push it - verify that you have a zipped file in the bucket that you created in step 3
+6. Run "lambda-code-upload pipeline" - verify that you have a zipped file in the bucket that you created in step 3
 
-7. After a successful run of the "lambda-code-upload pipeline", the "backend-AWS-deploy pipeline" TTS will be triggered automatically to deploy the TTS Converter App backend Infra. However, the deployment of resources requires 
-   manual triggering by selecting the "Apply" input option in the TTS Converter App backend Infra pipeline. This manual trigger was chosen to allow for manual control over apply 
-   and destroy actions.
+7. After a successful run of the "lambda-code-upload pipeline", the "backend-AWS-deploy pipeline" TTS will be triggered automatically to deploy the TTS Converter App backend Infra. However, the deployment of resources requires manual triggering by selecting the "Apply" input option in the TTS Converter App backend Infra pipeline. 
   
-8. Verify that the app running correctly in AWS
-   
-      Try the app using a curl query using the invokeURL of the API Gateway stage, which you can obtain from the output of the Terraform code or directly from the AWS 
-      Management Console (you can use the example in [this link](https://medium.com/@lucas.ludicsa99/texttospeechconvertertext-to-speech-converter-using-aws-lambda-polly-and-api-gateway-bf814d2bbe84)) 
+8. Verify that the backend is running correctly in AWS. You can ensure it by running a curl query using the invokeURL of the API Gateway stage, which you can obtain from the output of the Terraform code or directly from the AWS Management Console (you can use the example in [this link](https://medium.com/@lucas.ludicsa99/texttospeechconvertertext-to-speech-converter-using-aws-lambda-polly-and-api-gateway-bf814d2bbe84)) 
    
 ### Deploy the frontend
 
@@ -54,12 +43,13 @@ To solve it, new terraform files are added and two new pipelines are created (re
     
 13. Set your **cloudfront distribution id** created in step 10 (output) as secrets in your github repo with the name CLOUDFRONT_DISTRIBUTION_ID
     
-15. Trigger "react-frontend-code-deploy pipeline"
+15. Trigger "react-frontend-code-deploy" pipeline
 
 16. Open your web browser and navigate to your domain using HTTPS like https://yourdomainname. If everything is fine, you will receive a result like this:
 
-![image](https://github.com/mariemssi/TTS-Converter-Challenge-3/assets/69463864/7366979b-8ee0-4e8c-a941-16d7e00cdd85)
+![image](https://github.com/mariemssi/TTS-Converter-Challenge-3/assets/69463864/a21f7d69-41dc-4b11-a161-cbb75463650f)
+
 
 You can find more details [here](https://medium.com/@meriemiag/text-to-speech-converter-challenge2-github-actions-workflows-16c59556e6c1) 
 
-**Note:** After completing testing, remember to select the "Destroy" option in the TTS Converter App Infra pipelines to tear down the resources and prevent unexpected charges from AWS at the end of the month.
+**Note:** After completing testing, remember to select the "Destroy" option in the TTS Converter App Infra pipelines to tear down the resources and prevent unexpected charges from AWS at the end of the month 😉
